@@ -1,24 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-     <title> arirttictic opartors </title>
-
 </head>
 <body>
-  <p> this my this my arittictic opertors page </p>
 
-    <a href=https://rungta.ac.in/ >  RISU </a>
-      <img src="rungta.png" alt="Rungta Logo" width="200" height="200">
+  <div class="container">
 
-    <ol>
-        <li> name</li>
-        <li> section </li>
-        <li>  course </li>
-    </ol>
-    <h2> unorderd list </h2>
-    <ul>
-        <li> name</li>
-        <li> section </li>
-        <li>  course </li>
- </body>
+    <div class="left">
+      <input type="text" id="name" placeholder="Enter name">
+      <button onclick="saveUser()">Save</button>
+    </div>
+
+    <div class="right">
+      <h3>Users</h3>
+      <div id="users"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const API = "https://section-lbk-o9ti.onrender.com/users";
+
+    async function saveUser() {
+      const name = document.getElementById("name").value;
+
+      await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+      });
+
+      document.getElementById("name").value = "";
+      loadUsers();
+    }
+
+    async function loadUsers() {
+      const res = await fetch(API);
+      const users = await res.json();
+
+      document.getElementById("users").innerHTML =
+        users.map(u => `<p>${u.name}</p>`).join("");
+    }
+
+    loadUsers();
+  </script>
+
+</body>
 </html>
